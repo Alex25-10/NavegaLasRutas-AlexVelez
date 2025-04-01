@@ -1,4 +1,4 @@
-import CartWidget from "./cartwidget";
+import CartWidget from "./CartWidget";
 
 const NavBar = () => {
   return (
@@ -21,6 +21,9 @@ const NavBar = () => {
         <li><a href="#" style={navLinkStyle}>Inicio</a></li>
         <li><a href="#" style={navLinkStyle}>Productos</a></li>
         <li><a href="#" style={navLinkStyle}>Contacto</a></li>
+        <li><a href="#" style={navLinkStyle}>Electrónica</a></li>
+        <li><a href="#" style={navLinkStyle}>Ropa</a></li>
+        <li><a href="#" style={navLinkStyle}>Hogar</a></li>
       </ul>
       <CartWidget />
     </nav>
@@ -35,4 +38,5 @@ const navLinkStyle = {
 };
 
 export default NavBar;
+
 
