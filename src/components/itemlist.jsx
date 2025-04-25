@@ -1,11 +1,15 @@
-import Item from "./item";
+import Item from "./Item";
 
 const ItemList = ({ products }) => {
   return (
     <div>
-      {products.map((prod) => (
-        <Item key={prod.id} product={prod} />
-      ))}
+      {products.length > 0 ? (
+        products.map((prod) => (
+          <Item key={prod.id} product={prod} />
+        ))
+      ) : (
+        <p>No hay productos disponibles.</p>
+      )}
     </div>
   );
 };

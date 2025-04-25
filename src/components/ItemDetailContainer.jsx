@@ -7,6 +7,7 @@ const products = [
   { id: 3, name: "Sofá", category: "hogar", description: "Sofá cómodo" },
 ];
 
+
 const ItemDetailContainer = () => {
   const { itemId } = useParams();
   const [product, setProduct] = useState(null);
