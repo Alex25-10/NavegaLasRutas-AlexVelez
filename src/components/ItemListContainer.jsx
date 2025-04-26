@@ -1,47 +1,37 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebaseConfig";
+import Item from "../components/item";
 
 const ItemListContainer = () => {
-  const [productos, setProductos] = useState([]);
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    const productosRef = collection(db, "Productos");
+    const fetchProducts = async () => {
+      try {
+        const productsRef = collection(db, "productos");
+        const snapshot = await getDocs(productsRef);
 
-    getDocs(productosRef)
-      .then((resp) => {
-        const productosFirebase = resp.docs.map((doc) => ({
+        const productsData = snapshot.docs.map((doc) => ({
           id: doc.id,
-          ...doc.data()
+          ...doc.data(),
         }));
-        setProductos(productosFirebase);
-      })
-      .catch((error) => {
-        console.error("Error al obtener productos:", error);
-      });
+
+        setProducts(productsData);
+      } catch (error) {
+        console.error("Error fetching products: ", error);
+      }
+    };
+
+    fetchProducts();
   }, []);
 
   return (
-    <div className="container py-5">
-      <h1 className="mb-4 text-center">Productos</h1>
-      <div className="row g-4">
-        {productos.map((producto) => (
-          <div key={producto.id} className="col-sm-6 col-md-4 col-lg-3">
-            <div className="card h-100 shadow-sm">
-              <img
-                src={producto.Imagen}
-                className="card-img-top"
-                alt={producto.Nombre}
-                style={{ height: "200px", objectFit: "cover" }}
-              />
-              <div className="card-body d-flex flex-column">
-                <h5 className="card-title">{producto.Nombre}</h5>
-                <p className="card-text">Precio: ${producto.Precio}</p>
-                <p className="card-text">Stock: {producto.Stock}</p>
-                <button className="btn btn-primary mt-auto">Agregar al carrito</button>
-              </div>
-            </div>
-          </div>
+    <div className="container mt-4">
+      <h1 className="text-center mb-4">Nuestros Productos</h1>
+      <div className="d-flex flex-wrap justify-content-center">
+        {products.map((product) => (
+          <Item key={product.id} product={product} />
         ))}
       </div>
     </div>
