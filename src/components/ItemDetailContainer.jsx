@@ -1,52 +1,31 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { useCart } from "../Context/CartContext"; // 👈 Importamos el hook
-
-import { collection, doc, getDoc } from "firebase/firestore";
-import { db } from "../firebaseConfig"; // 👈 Asegúrate que tu conexión esté bien importada
+import { db } from "../firebaseConfig";
+import { doc, getDoc } from "firebase/firestore";
+import ItemDetail from "./ItemDetail";
 
 const ItemDetailContainer = () => {
+  const [item, setItem] = useState(null);
   const { itemId } = useParams();
-  const [product, setProduct] = useState(null);
-  const { addToCart } = useCart(); // 👈 Usamos addToCart del context
 
   useEffect(() => {
-    const getProduct = async () => {
-      const productRef = doc(collection(db, "productos"), itemId);
-      const productSnap = await getDoc(productRef);
-      if (productSnap.exists()) {
-        setProduct({ id: productSnap.id, ...productSnap.data() });
-      } else {
-        console.error("Producto no encontrado");
+    const fetchItem = async () => {
+      const docRef = doc(db, "Productos", itemId);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        setItem({ id: docSnap.id, ...docSnap.data() });
       }
     };
 
-    getProduct();
+    fetchItem();
   }, [itemId]);
 
-  const handleAddToCart = () => {
-    if (product) {
-      addToCart(product);
-      alert(`${product.name} agregado al carrito`);
-    }
-  };
+  if (!item) {
+    return <div className="text-center my-5">Cargando...</div>;
+  }
 
-  return (
-    <div className="container mt-5">
-      {product ? (
-        <>
-          <h2>{product.name}</h2>
-          <p>{product.description}</p>
-          <p>Precio: ${product.price}</p>
-          <button className="btn btn-primary" onClick={handleAddToCart}>
-            Agregar al carrito
-          </button>
-        </>
-      ) : (
-        <p>Cargando producto...</p>
-      )}
-    </div>
-  );
+  return <ItemDetail item={item} />;
 };
 
 export default ItemDetailContainer;

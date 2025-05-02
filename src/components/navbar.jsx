@@ -1,56 +1,43 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
-import CartWidget from "./CartWidget";
+import { Link, NavLink } from "react-router-dom";
+import CartWidget from "./cartwidget"; 
+import { useContext } from "react";
+import { CartContext } from "../Context/CartContext";
 
 const Navbar = () => {
+  const { cantidadTotal } = useContext(CartContext);
+
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark px-4">
-      <NavLink className="navbar-brand" to="/">
-        Mi Tienda
-      </NavLink>
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div className="container">
+        <Link className="navbar-brand" to="/">MiTienda</Link>
+        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span className="navbar-toggler-icon"></span>
+        </button>
 
-      <button
-        className="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarNav"
-        aria-controls="navbarNav"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span className="navbar-toggler-icon"></span>
-      </button>
-
-      <div className="collapse navbar-collapse" id="navbarNav">
-        <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-          <li className="nav-item">
-            <NavLink className="nav-link" to="/">
-              Inicio
-            </NavLink>
-          </li>
-          <li className="nav-item">
-            <NavLink className="nav-link" to="/categoria/electro">
-              Electro
-            </NavLink>
-          </li>
-          <li className="nav-item">
-            <NavLink className="nav-link" to="/categoria/moda">
-              Moda
-            </NavLink>
-          </li>
-          <li className="nav-item">
-            <NavLink className="nav-link" to="/categoria/deportes">
-              Deportes
-            </NavLink>
-          </li>
-        </ul>
-        <CartWidget />
+        <div className="collapse navbar-collapse" id="navbarNav">
+          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/">Inicio</NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/categoria/ropa">Ropa</NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/categoria/electronica">Electrónica</NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/categoria/hogar">Hogar</NavLink>
+            </li>
+          </ul>
+          <CartWidget /> {/* Aquí reemplazás el Link por el nuevo componente */}
+        </div>
       </div>
     </nav>
   );
 };
 
 export default Navbar;
+
 
 
 
